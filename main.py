@@ -58,13 +58,20 @@ def save():
 
 def search():
     website = website_entry.get()
-    with open("data.json", "r") as data_file:
-        data = json.load(data_file)
+    try:
+        with open("data.json", "r") as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showinfo(
+            title=f"Empty", message=f"Database empty Please add entry")
+    else:
+
         if website in data:
             messagebox.showinfo(
                 title=f"{website}", message=f"Email:{data[f'{website}']['email']} \n password: {data[f'{website}']['password']}")
         else:
-            print('not here')
+            messagebox.showinfo(
+                title=f"{website}", message=f"{website} not found is database")
 
 
 window = Tk()
@@ -72,8 +79,7 @@ window.title("Password Manager")
 window.config(padx=50, pady=50)
 
 canvas = Canvas(height=200, width=200)
-logo_img = PhotoImage(file="logo.png")
-canvas.create_image(100, 100, image=logo_img)
+
 canvas.grid(row=0, column=1)
 
 # Labels
@@ -85,8 +91,8 @@ password_label = Label(text="Password:")
 password_label.grid(row=3, column=0)
 
 # Entries
-website_entry = Entry(width=15)
-website_entry.grid(row=1, column=1, columnspan=2)
+website_entry = Entry(width=21)
+website_entry.grid(row=1, column=1, )
 website_entry.focus()
 email_entry = Entry(width=35)
 email_entry.grid(row=2, column=1, columnspan=2)
